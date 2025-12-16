@@ -2,14 +2,11 @@ version: "3.9"
 
 services:
   backend:
-    build:
-      context: .
-      dockerfile: Dockerfile.backend
+    image: ${DOCKERHUB_USERNAME:-local}/app-backend:latest
     container_name: app-backend
-    env_file:
-      - .env
     environment:
       - PORT=8000
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
     ports:
       - "8000:8000"
     restart: unless-stopped
@@ -20,9 +17,7 @@ services:
       retries: 3
 
   frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile.frontend
+    image: ${DOCKERHUB_USERNAME:-local}/app-frontend:latest
     container_name: app-frontend
     ports:
       - "80:80"
