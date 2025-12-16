@@ -42,11 +42,14 @@ jobs:
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy to EC2
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          rsync -az --delete . ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/app
+          rsync -az --exclude '.env' . ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/app
           ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
             set -e
             cd /home/${{ secrets.EC2_USER }}/app
+            export GEMINI_API_KEY=\"$GEMINI_API_KEY\"
             export DOCKERHUB_USERNAME='${{ secrets.DOCKERHUB_USERNAME }}'
             docker compose pull
             docker compose up -d --remove-orphans

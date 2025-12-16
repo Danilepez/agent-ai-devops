@@ -2,10 +2,9 @@ services:
   backend:
     image: ${DOCKERHUB_USERNAME:-local}/app-backend:latest
     container_name: app-backend
-    env_file:
-      - .env
     environment:
       - PORT=8000
+      - GEMINI_API_KEY=${GEMINI_API_KEY:?missing}
     ports:
       - "8000:8000"
     restart: unless-stopped
