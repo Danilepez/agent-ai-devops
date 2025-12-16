@@ -1,7 +1,7 @@
 # backend/app.py
 import os
 from flask import Flask, render_template, request, jsonify
-from gemini_client import GeminiClient
+from .gemini_client import GeminiClient
 
 app = Flask(__name__, template_folder='../templates')
 client = GeminiClient()
